@@ -2,9 +2,11 @@ import type { Note, NoteDataForService } from "../types/notes";
 
 const baseApiUrl = "http://localhost:4001/api/v1";
 
-export const getNotes = async (): Promise<Note[]> => {
+export const getNotes = async (category?: number): Promise<Note[]> => {
   try {
-    const response = await fetch(`${baseApiUrl}/notes`);
+    const params = new URLSearchParams();
+    if (category) params.append("category", category.toString());
+    const response = await fetch(`${baseApiUrl}/notes?${params}`);
     if (!response.ok) {
       throw new Error("Failed to fetch notes");
     }
@@ -20,12 +22,16 @@ export const createNote = async (
   noteData: NoteDataForService
 ): Promise<number> => {
   try {
+    const newNoteData = {
+      ...noteData,
+      id_category: noteData.id_category ? noteData.id_category : null,
+    };
     const response = await fetch(`${baseApiUrl}/notes`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(noteData),
+      body: JSON.stringify(newNoteData),
     });
     if (!response.ok) {
       throw new Error("Failed to create note");

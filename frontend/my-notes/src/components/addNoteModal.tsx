@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from "react";
-import type { Note, NoteDataForService } from "../types/notes";
+import useCategoryStore from "../store/category.store.ts";
+import type { Category } from "../types/category";
+import useNotesStore from "../store/notes.store.ts";
 
 interface AddNoteModalProps {
   isOpen: boolean;
-  onClose: () => void;
-  onAddNote: (noteData: NoteDataForService) => void;
-  onEditNote: (noteData: NoteDataForService) => void;
-  noteData: Note | null;
-  isEditing: boolean;
 }
 
 // Helper to generate a random hex color
@@ -17,53 +14,75 @@ const getRandomColor = () =>
     .toString(16)
     .padStart(6, "0");
 
-const AddNoteModal: React.FC<AddNoteModalProps> = ({
-  isOpen,
-  onClose,
-  onAddNote,
-  onEditNote,
-  noteData = null,
-  isEditing = false,
-}) => {
+const AddNoteModal: React.FC<AddNoteModalProps> = ({ isOpen }) => {
+  const editMode = useNotesStore((state) => state.editMode);
+  const noteData = useNotesStore((state) => state.editingNote);
+
   const [title, setTitle] = useState(noteData?.title || "");
   const [content, setContent] = useState(noteData?.content || "");
   const [color, setColor] = useState(noteData?.color || "#ffffff");
+  const [category, setCategory] = useState<Category | null>(null);
+
+  const categories = useCategoryStore((state) => state.categories);
+  const handleAddNote = useNotesStore((state) => state.handleAddNote);
+  const handleEditNote = useNotesStore((state) => state.handleEditNote);
+
+  const closeAddModal = useNotesStore((state) => state.closeAddModal);
 
   // Randomize color when modal opens
   useEffect(() => {
-    if (isOpen && !isEditing) {
+    if (isOpen && !editMode) {
       setColor(getRandomColor());
       setTitle("");
       setContent("");
     }
-  }, [isOpen, isEditing]);
+  }, [isOpen, editMode]);
+
+  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedCategory = categories?.find(
+      (cat) => cat.id_category === parseInt(e.target.value)
+    );
+    setCategory(selectedCategory || null);
+  };
+
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.target.value);
+  };
+
+  const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setContent(e.target.value);
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (isEditing) {
-      onEditNote({ title, content, color, id_category: 1 });
-      setTitle("");
-      setContent("");
-      setColor(getRandomColor());
-      onClose();
-      return;
-    }
+    if (title.trim() && content.trim())
+      if (editMode) {
+        handleEditNote({
+          title,
+          content,
+          color,
+          id_category: category?.id_category || 0,
+        });
+      } else
+        handleAddNote({
+          title,
+          content,
+          color,
+          id_category: category?.id_category || 0,
+        });
 
-    if (title.trim() && content.trim()) {
-      onAddNote({ title, content, color, id_category: 1 });
-      setTitle("");
-      setContent("");
-      setColor(getRandomColor());
-      onClose();
-    }
+    setTitle("");
+    setContent("");
+    setColor(getRandomColor());
+    closeAddModal();
   };
 
   if (!isOpen) return null;
 
   return (
-    <div className="modal-backdrop" onClick={onClose}>
+    <div className="modal-backdrop" onClick={closeAddModal}>
       <div className="modal" onClick={(e) => e.stopPropagation()}>
-        <h2>{isEditing ? "Edit Note" : "Add Note"}</h2>
+        <h2>{editMode ? "Edit Note" : "Add Note"}</h2>
         <form onSubmit={handleSubmit}>
           <input
             type="text"
@@ -71,7 +90,7 @@ const AddNoteModal: React.FC<AddNoteModalProps> = ({
             name="title"
             autoFocus
             value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={handleTitleChange}
             required
           />
           <textarea
@@ -79,10 +98,36 @@ const AddNoteModal: React.FC<AddNoteModalProps> = ({
             name="content"
             rows={4}
             value={content}
-            onChange={(e) => setContent(e.target.value)}
+            onChange={handleContentChange}
             required
           />
-          <div className="color-picker">
+          <section className="category-picker" style={{ margin: "1rem 0" }}>
+            <select
+              id="category-select"
+              name="category"
+              value={category?.id_category || ""}
+              onChange={handleCategoryChange}
+              style={{
+                width: "100%",
+                marginBottom: "0.5rem",
+                padding: "0.5rem",
+              }}
+            >
+              <option key={0} value={""}>
+                Default Category
+              </option>
+              {categories &&
+                categories.map((category: Category) => (
+                  <option
+                    key={category.id_category}
+                    value={category.id_category}
+                  >
+                    {category.name}
+                  </option>
+                ))}
+            </select>
+          </section>
+          <section className="color-picker">
             <label>Choose a color for the note:</label>
             <input
               type="color"
@@ -92,13 +137,13 @@ const AddNoteModal: React.FC<AddNoteModalProps> = ({
               className="color-input"
               aria-label="Custom color picker"
             />
-          </div>
-          <div className="modal-actions">
-            <button type="submit">{isEditing ? "Edit" : "Add"}</button>
-            <button type="button" onClick={onClose}>
+          </section>
+          <section className="modal-actions">
+            <button type="submit">{editMode ? "Edit" : "Add"}</button>
+            <button type="button" onClick={closeAddModal}>
               Cancel
             </button>
-          </div>
+          </section>
         </form>
       </div>
       <style>{`

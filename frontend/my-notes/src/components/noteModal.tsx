@@ -1,11 +1,12 @@
+import useNotesStore from "../store/notes.store.ts";
 import type { Note } from "../types/notes";
 
 type NoteModalProps = {
   selectedNote: Note;
-  closeModal: () => void;
 };
 
-const NoteModal = ({ selectedNote, closeModal }: NoteModalProps) => {
+const NoteModal = ({ selectedNote }: NoteModalProps) => {
+  const closeNoteModal = useNotesStore((state) => state.closeNoteModal);
   return (
     <>
       <style>
@@ -57,7 +58,7 @@ const NoteModal = ({ selectedNote, closeModal }: NoteModalProps) => {
           }
         `}
       </style>
-      <div className="note-modal-backdrop" onClick={closeModal}>
+      <div className="note-modal-backdrop" onClick={closeNoteModal}>
         <div
           className="note-modal-content"
           onClick={(e) => e.stopPropagation()}
@@ -68,7 +69,7 @@ const NoteModal = ({ selectedNote, closeModal }: NoteModalProps) => {
           }}
         >
           <button
-            onClick={closeModal}
+            onClick={closeNoteModal}
             className="note-modal-close-btn"
             aria-label="Close"
           >

@@ -1,26 +1,21 @@
 import { useRef, useLayoutEffect, useState } from "react";
 import type { Note } from "../types/notes";
 import { Pencil, Archive, Trash2, ArchiveRestore } from "lucide-react";
+import useNotesStore from "../store/notes.store.ts";
 
 type NotesProps = {
   note: Note;
-  onClick: (note: Note) => void;
-  onEdit: (note: Note) => void;
-  onDelete: (note: Note) => void;
-  onArchive?: (note: Note) => void;
-  onRestore?: (note: Note) => void;
 };
 
-const Notes = ({
-  note,
-  onClick,
-  onEdit,
-  onDelete,
-  onArchive,
-  onRestore,
-}: NotesProps) => {
+const Notes = ({ note }: NotesProps) => {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const [maxWidth, setMaxWidth] = useState<number | undefined>(undefined);
+
+  const openNoteModal = useNotesStore((state) => state.openNoteModal);
+  const editNote = useNotesStore((state) => state.editNote);
+  const onArchiveNote = useNotesStore((state) => state.onArchiveNote);
+  const onRestoreNote = useNotesStore((state) => state.onRestoreNote);
+  const onDeleteNote = useNotesStore((state) => state.onDeleteNote);
 
   useLayoutEffect(() => {
     if (titleRef.current) {
@@ -97,7 +92,7 @@ const Notes = ({
           maxWidth: maxWidth ? `${maxWidth + 96}px` : undefined,
           backgroundColor: note.color,
         }}
-        onClick={() => onClick(note)}
+        onClick={() => openNoteModal(note)}
       >
         <h3 ref={titleRef} className="notes-title" title={note.title}>
           {note.title}
@@ -111,26 +106,30 @@ const Notes = ({
         <div>
           <div className="buttonContainer" onClick={(e) => e.stopPropagation()}>
             <button type="button" className="buttons" title="Edit">
-              <Pencil color="white" size={18} onClick={() => onEdit(note)} />
+              <Pencil color="white" size={18} onClick={() => editNote(note)} />
             </button>
             <button type="button" className="buttons" title="Edit">
-              <Trash2 color="white" size={18} onClick={() => onDelete(note)} />
+              <Trash2
+                color="white"
+                size={18}
+                onClick={() => onDeleteNote(note)}
+              />
             </button>
-            {onArchive && (
+            {note.isActive && (
               <button type="button" className="buttons" title="Archive">
                 <Archive
                   color="white"
                   size={18}
-                  onClick={() => onArchive(note)}
+                  onClick={() => onArchiveNote(note)}
                 />
               </button>
             )}
-            {onRestore && (
+            {!note.isActive && (
               <button type="button" className="buttons" title="Archive">
                 <ArchiveRestore
                   color="white"
                   size={18}
-                  onClick={() => onRestore(note)}
+                  onClick={() => onRestoreNote(note)}
                 />
               </button>
             )}

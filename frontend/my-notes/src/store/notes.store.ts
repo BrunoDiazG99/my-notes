@@ -27,7 +27,7 @@ type NotesStore = {
   handleAddNote: (noteData: NoteDataForService) => void;
   handleEditNote: (noteData: NoteDataForService) => void;
 
-  fetchNotes: () => void;
+  fetchNotes: (category?: number) => void;
 };
 
 const useNotesStore = create<NotesStore>()((set, get) => ({
@@ -124,9 +124,8 @@ const useNotesStore = create<NotesStore>()((set, get) => ({
       });
   },
 
-  fetchNotes: async () => {
-    const notes = await getNotes();
-    console.log("Fetched notes:", notes);
+  fetchNotes: async (category) => {
+    const notes = await getNotes(category);
     set(() => ({ notes }));
   },
 }));
