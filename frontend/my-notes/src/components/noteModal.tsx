@@ -80,7 +80,7 @@ const NoteModal = ({ selectedNote, closeModal }: NoteModalProps) => {
           </div>
           <span>
             <strong>Created on:</strong>{" "}
-            {selectedNote.dateCreated?.toLocaleDateString()}
+            {new Date(selectedNote.dateCreated).toDateString()}
           </span>
         </div>
       </div>

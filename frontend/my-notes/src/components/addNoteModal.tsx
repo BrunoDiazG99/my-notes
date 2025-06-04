@@ -1,19 +1,11 @@
 import React, { useState, useEffect } from "react";
-import type { Note } from "../types/notes";
+import type { Note, NoteDataForService } from "../types/notes";
 
 interface AddNoteModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onAddNote: (noteData: {
-    title: string;
-    content: string;
-    color: string;
-  }) => void;
-  onEditNote: (noteData: {
-    title: string;
-    content: string;
-    color: string;
-  }) => void;
+  onAddNote: (noteData: NoteDataForService) => void;
+  onEditNote: (noteData: NoteDataForService) => void;
   noteData: Note | null;
   isEditing: boolean;
 }
@@ -49,7 +41,7 @@ const AddNoteModal: React.FC<AddNoteModalProps> = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (isEditing) {
-      onEditNote({ title, content, color });
+      onEditNote({ title, content, color, id_category: 1 });
       setTitle("");
       setContent("");
       setColor(getRandomColor());
@@ -58,7 +50,7 @@ const AddNoteModal: React.FC<AddNoteModalProps> = ({
     }
 
     if (title.trim() && content.trim()) {
-      onAddNote({ title, content, color });
+      onAddNote({ title, content, color, id_category: 1 });
       setTitle("");
       setContent("");
       setColor(getRandomColor());

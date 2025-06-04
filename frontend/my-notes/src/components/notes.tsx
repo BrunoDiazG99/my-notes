@@ -106,7 +106,7 @@ const Notes = ({
           {note.content}
         </div>
         <span className="notes-date">
-          {`Created: ${note.dateCreated?.toLocaleDateString() || "No date"}`}
+          {`Created: ${new Date(note.dateCreated).toDateString() || "No date"}`}
         </span>
         <div>
           <div className="buttonContainer" onClick={(e) => e.stopPropagation()}>

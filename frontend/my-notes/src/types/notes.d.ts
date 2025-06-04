@@ -6,7 +6,14 @@ export type Note = {
   content: string;
   color: string;
   id_category: number;
-  category?: Category | null;
-  isActive?: boolean;
-  dateCreated?: Date;
+  category: Category | null;
+  isActive: boolean;
+  dateCreated: string;
+};
+
+export type NoteDataForService = {
+  title: string;
+  content: string;
+  color: string;
+  id_category: number;
 };
