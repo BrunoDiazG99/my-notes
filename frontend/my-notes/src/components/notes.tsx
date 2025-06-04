@@ -1,13 +1,24 @@
 import { useRef, useLayoutEffect, useState } from "react";
 import type { Note } from "../types/notes";
-import { Pencil, Archive } from "lucide-react";
+import { Pencil, Archive, Trash2, ArchiveRestore } from "lucide-react";
 
 type NotesProps = {
   note: Note;
   onClick: (note: Note) => void;
+  onEdit: (note: Note) => void;
+  onDelete: (note: Note) => void;
+  onArchive?: (note: Note) => void;
+  onRestore?: (note: Note) => void;
 };
 
-const Notes = ({ note, onClick }: NotesProps) => {
+const Notes = ({
+  note,
+  onClick,
+  onEdit,
+  onDelete,
+  onArchive,
+  onRestore,
+}: NotesProps) => {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const [maxWidth, setMaxWidth] = useState<number | undefined>(undefined);
 
@@ -33,6 +44,9 @@ const Notes = ({ note, onClick }: NotesProps) => {
             transition: box-shadow 0.2s;
             cursor: pointer;
           }
+          .notes-container:hover {
+            box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
+          }
           .notes-title {
             margin: 0;
             margin-bottom: 8px;
@@ -55,13 +69,32 @@ const Notes = ({ note, onClick }: NotesProps) => {
             display: block;
             margin-top: 8px;
           }
+          .buttonContainer{
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 12px;
+          }
+          .buttons{
+            background-color: black;
+            border: none;
+            border-radius: 4px;
+            padding: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+          .buttons:hover {
+            background-color: #333;
+          }
         `}
       </style>
       <div
         className="notes-container"
         style={{
-          width: maxWidth ? `${maxWidth + 48}px` : "200px",
-          maxWidth: maxWidth ? `${maxWidth + 48}px` : undefined,
+          width: maxWidth ? `${maxWidth + 96}px` : "200px",
+          maxWidth: maxWidth ? `${maxWidth + 96}px` : undefined,
           backgroundColor: note.color,
         }}
         onClick={() => onClick(note)}
@@ -76,55 +109,31 @@ const Notes = ({ note, onClick }: NotesProps) => {
           {`Created: ${note.dateCreated?.toLocaleDateString() || "No date"}`}
         </span>
         <div>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              gap: "8px",
-              marginTop: "12px",
-            }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              type="button"
-              style={{
-                background: "black",
-                border: "none",
-                borderRadius: "4px",
-                padding: "6px",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-              title="Edit"
-            >
-              <Pencil
-                color="white"
-                size={18}
-                onClick={() => console.log("editing")}
-              />
+          <div className="buttonContainer" onClick={(e) => e.stopPropagation()}>
+            <button type="button" className="buttons" title="Edit">
+              <Pencil color="white" size={18} onClick={() => onEdit(note)} />
             </button>
-            <button
-              type="button"
-              style={{
-                background: "black",
-                border: "none",
-                borderRadius: "4px",
-                padding: "6px",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-              title="Archive"
-            >
-              <Archive
-                color="white"
-                size={18}
-                onClick={() => console.log("archiving")}
-              />
+            <button type="button" className="buttons" title="Edit">
+              <Trash2 color="white" size={18} onClick={() => onDelete(note)} />
             </button>
+            {onArchive && (
+              <button type="button" className="buttons" title="Archive">
+                <Archive
+                  color="white"
+                  size={18}
+                  onClick={() => onArchive(note)}
+                />
+              </button>
+            )}
+            {onRestore && (
+              <button type="button" className="buttons" title="Archive">
+                <ArchiveRestore
+                  color="white"
+                  size={18}
+                  onClick={() => onRestore(note)}
+                />
+              </button>
+            )}
           </div>
         </div>
       </div>

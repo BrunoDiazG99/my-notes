@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import type { Note } from "../types/notes";
 
 interface AddNoteModalProps {
   isOpen: boolean;
@@ -8,6 +9,13 @@ interface AddNoteModalProps {
     content: string;
     color: string;
   }) => void;
+  onEditNote: (noteData: {
+    title: string;
+    content: string;
+    color: string;
+  }) => void;
+  noteData: Note | null;
+  isEditing: boolean;
 }
 
 // Helper to generate a random hex color
@@ -21,22 +29,34 @@ const AddNoteModal: React.FC<AddNoteModalProps> = ({
   isOpen,
   onClose,
   onAddNote,
+  onEditNote,
+  noteData = null,
+  isEditing = false,
 }) => {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [color, setColor] = useState("#ffffff");
+  const [title, setTitle] = useState(noteData?.title || "");
+  const [content, setContent] = useState(noteData?.content || "");
+  const [color, setColor] = useState(noteData?.color || "#ffffff");
 
   // Randomize color when modal opens
   useEffect(() => {
-    if (isOpen) {
+    if (isOpen && !isEditing) {
       setColor(getRandomColor());
       setTitle("");
       setContent("");
     }
-  }, [isOpen]);
+  }, [isOpen, isEditing]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (isEditing) {
+      onEditNote({ title, content, color });
+      setTitle("");
+      setContent("");
+      setColor(getRandomColor());
+      onClose();
+      return;
+    }
+
     if (title.trim() && content.trim()) {
       onAddNote({ title, content, color });
       setTitle("");
@@ -51,7 +71,7 @@ const AddNoteModal: React.FC<AddNoteModalProps> = ({
   return (
     <div className="modal-backdrop" onClick={onClose}>
       <div className="modal" onClick={(e) => e.stopPropagation()}>
-        <h2>Add Note</h2>
+        <h2>{isEditing ? "Edit Note" : "Add Note"}</h2>
         <form onSubmit={handleSubmit}>
           <input
             type="text"
@@ -82,7 +102,7 @@ const AddNoteModal: React.FC<AddNoteModalProps> = ({
             />
           </div>
           <div className="modal-actions">
-            <button type="submit">Add</button>
+            <button type="submit">{isEditing ? "Edit" : "Add"}</button>
             <button type="button" onClick={onClose}>
               Cancel
             </button>
