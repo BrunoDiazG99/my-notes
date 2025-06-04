@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 interface AddNoteModalProps {
   isOpen: boolean;
@@ -10,14 +10,12 @@ interface AddNoteModalProps {
   }) => void;
 }
 
-const COLORS = [
-  "#FFD700",
-  "#90EE90",
-  "#ADD8E6",
-  "#FFB6C1",
-  "#FFFACD",
-  "#E6E6FA",
-];
+// Helper to generate a random hex color
+const getRandomColor = () =>
+  "#" +
+  Math.floor(Math.random() * 0xffffff)
+    .toString(16)
+    .padStart(6, "0");
 
 const AddNoteModal: React.FC<AddNoteModalProps> = ({
   isOpen,
@@ -26,7 +24,16 @@ const AddNoteModal: React.FC<AddNoteModalProps> = ({
 }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [color, setColor] = useState(COLORS[0]);
+  const [color, setColor] = useState("#ffffff");
+
+  // Randomize color when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      setColor(getRandomColor());
+      setTitle("");
+      setContent("");
+    }
+  }, [isOpen]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,7 +41,7 @@ const AddNoteModal: React.FC<AddNoteModalProps> = ({
       onAddNote({ title, content, color });
       setTitle("");
       setContent("");
-      setColor(COLORS[0]);
+      setColor(getRandomColor());
       onClose();
     }
   };
@@ -42,8 +49,8 @@ const AddNoteModal: React.FC<AddNoteModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="modal-backdrop">
-      <div className="modal">
+    <div className="modal-backdrop" onClick={onClose}>
+      <div className="modal" onClick={(e) => e.stopPropagation()}>
         <h2>Add Note</h2>
         <form onSubmit={handleSubmit}>
           <input

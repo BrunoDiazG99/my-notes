@@ -1,5 +1,6 @@
 import { useRef, useLayoutEffect, useState } from "react";
 import type { Note } from "../types/notes";
+import { Pencil, Archive } from "lucide-react";
 
 type NotesProps = {
   note: Note;
@@ -17,61 +18,117 @@ const Notes = ({ note, onClick }: NotesProps) => {
   }, [note.title]);
 
   return (
-    <div
-      style={{
-        width: maxWidth ? `${maxWidth + 48}px` : "200px", // 48px for padding (24px left + 24px right)
-        maxWidth: maxWidth ? `${maxWidth + 48}px` : undefined,
-        height: "150px",
-        backgroundColor: note.color,
-        border: "2px solid black",
-        borderRadius: "8px",
-        padding: "24px",
-        boxSizing: "border-box",
-        display: "flex",
-        flexDirection: "column",
-        overflow: "hidden",
-      }}
-      onClick={() => onClick(note)}
-    >
-      <h3
-        ref={titleRef}
-        style={{
-          margin: 0,
-          marginBottom: "8px",
-          whiteSpace: "nowrap",
-          overflow: "hidden",
-          textOverflow: "ellipsis",
-        }}
-        title={note.title}
-      >
-        {note.title}
-      </h3>
+    <>
+      <style>
+        {`
+          .notes-container {
+            height: 200px;
+            border: 2px solid black;
+            border-radius: 8px;
+            padding: 24px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: box-shadow 0.2s;
+            cursor: pointer;
+          }
+          .notes-title {
+            margin: 0;
+            margin-bottom: 8px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+          .notes-content {
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 10;
+            -webkit-box-orient: vertical;
+            white-space: nowrap;
+          }
+          .notes-date {
+            font-size: 0.8rem;
+            color: #555;
+            display: block;
+            margin-top: 8px;
+          }
+        `}
+      </style>
       <div
+        className="notes-container"
         style={{
-          flex: 1,
-          overflow: "hidden",
-          textOverflow: "ellipsis",
-          display: "-webkit-box",
-          WebkitLineClamp: 10,
-          WebkitBoxOrient: "vertical",
-          whiteSpace: "nowrap",
+          width: maxWidth ? `${maxWidth + 48}px` : "200px",
+          maxWidth: maxWidth ? `${maxWidth + 48}px` : undefined,
+          backgroundColor: note.color,
         }}
-        title={note.content}
+        onClick={() => onClick(note)}
       >
-        {note.content}
+        <h3 ref={titleRef} className="notes-title" title={note.title}>
+          {note.title}
+        </h3>
+        <div className="notes-content" title={note.content}>
+          {note.content}
+        </div>
+        <span className="notes-date">
+          {`Created: ${note.dateCreated?.toLocaleDateString() || "No date"}`}
+        </span>
+        <div>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              gap: "8px",
+              marginTop: "12px",
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              style={{
+                background: "black",
+                border: "none",
+                borderRadius: "4px",
+                padding: "6px",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+              title="Edit"
+            >
+              <Pencil
+                color="white"
+                size={18}
+                onClick={() => console.log("editing")}
+              />
+            </button>
+            <button
+              type="button"
+              style={{
+                background: "black",
+                border: "none",
+                borderRadius: "4px",
+                padding: "6px",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+              title="Archive"
+            >
+              <Archive
+                color="white"
+                size={18}
+                onClick={() => console.log("archiving")}
+              />
+            </button>
+          </div>
+        </div>
       </div>
-      <span
-        style={{
-          fontSize: "0.8rem",
-          color: "#555",
-          display: "block",
-          marginTop: "8px",
-        }}
-      >
-        {`Created: ${note.dateCreated?.toLocaleDateString() || "No date"}`}
-      </span>
-      <div></div>
-    </div>
+    </>
   );
 };
 
