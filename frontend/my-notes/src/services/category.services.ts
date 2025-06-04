@@ -1,6 +1,5 @@
 import type { Category, CategoryDataForService } from "../types/category";
-
-const baseApiUrl = "http://localhost:4001/api/v1";
+import { baseApiUrl } from "./api.service.ts";
 
 export const getCategories = async (): Promise<Category[]> => {
   try {

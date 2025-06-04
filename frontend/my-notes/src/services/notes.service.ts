@@ -1,6 +1,5 @@
 import type { Note, NoteDataForService } from "../types/notes";
-
-const baseApiUrl = "http://localhost:4001/api/v1";
+import { baseApiUrl } from "./api.service.ts";
 
 export const getNotes = async (category?: number): Promise<Note[]> => {
   try {
