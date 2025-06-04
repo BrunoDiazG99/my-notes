@@ -3,9 +3,9 @@ import { Note, NotesModel } from "../models/notes.model.ts";
 export class NotesService {
   private notesModel = new NotesModel();
 
-  getAll = async () => {
+  getAll = async (category?: string) => {
     try {
-      const results = await this.notesModel.getAll();
+      const results = await this.notesModel.getAll(category);
       return results;
     } catch (error) {
       console.error("Error in service: ", error);

@@ -1,6 +1,6 @@
 import { Sequelize } from "sequelize";
 
-const orm = new Sequelize("myNotes", "root", "paltita99sql", {
+const orm = new Sequelize("my-notes", "root", "paltita99sql", {
   host: "localhost",
   dialect: "mysql",
   pool: {

@@ -6,7 +6,7 @@ import cors from "cors";
 import api from "./src/routes.js";
 import orm from "./src/config/sequelize.js";
 
-const FRONTEND_URL = "http://localhost:4001";
+const FRONTEND_URL = "http://localhost:5173";
 
 const corsOptions = {
   origin: FRONTEND_URL,

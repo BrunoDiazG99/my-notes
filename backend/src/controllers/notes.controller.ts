@@ -7,7 +7,8 @@ export class NotesController {
 
   async getNotes(req: Request, res: Response) {
     try {
-      const notes = await this.noteServices.getAll();
+      const category = req.query.category as string;
+      const notes = await this.noteServices.getAll(category);
       return res.json(notes || []);
     } catch (error) {
       console.error("Error fetching notes:", error);

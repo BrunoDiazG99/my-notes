@@ -1,4 +1,4 @@
-import { DataTypes } from "sequelize";
+import { DataTypes, where } from "sequelize";
 import orm from "../config/sequelize.js";
 import { Categories } from "./categories.model.ts";
 
@@ -63,11 +63,18 @@ export const connect = async function () {
 };
 
 export class NotesModel {
-  getAll = async () => {
+  getAll = async (category?: string) => {
     try {
       const results = await Notes.findAll({
+        include: [
+          {
+            model: Categories,
+            as: "category",
+            attributes: ["id_category", "name"],
+          },
+        ],
         where: {
-          isActive: true,
+          ...(category ? { id_category: category } : {}),
         },
       });
       if (!results) {

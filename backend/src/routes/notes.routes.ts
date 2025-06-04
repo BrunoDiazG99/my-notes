@@ -10,7 +10,9 @@ router.post("/", notesController.createNote.bind(notesController));
 router.put("/:id", notesController.updateNote.bind(notesController));
 router.delete("/:id", notesController.deleteNote.bind(notesController));
 
-router.get("/archive", notesController.getArchived.bind(notesController));
+// Decided it was not neccesary
+// router.get("/archive", notesController.getArchived.bind(notesController));
+
 router.put("/archive/:id", notesController.archive.bind(notesController));
 router.put("/restore/:id", notesController.restore.bind(notesController));
 
