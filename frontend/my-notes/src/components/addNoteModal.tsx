@@ -49,30 +49,30 @@ const AddNoteModal: React.FC<AddNoteModalProps> = ({
           <input
             type="text"
             placeholder="Title"
+            name="title"
+            autoFocus
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             required
           />
           <textarea
             placeholder="Content"
+            name="content"
+            rows={4}
             value={content}
             onChange={(e) => setContent(e.target.value)}
             required
           />
           <div className="color-picker">
-            <label>Choose color:</label>
-            <div className="color-options">
-              {COLORS.map((c) => (
-                <button
-                  key={c}
-                  type="button"
-                  className={`color-btn${color === c ? " selected" : ""}`}
-                  style={{ background: c }}
-                  onClick={() => setColor(c)}
-                  aria-label={`Choose color ${c}`}
-                />
-              ))}
-            </div>
+            <label>Choose a color for the note:</label>
+            <input
+              type="color"
+              name="color"
+              value={color}
+              onChange={(e) => setColor(e.target.value)}
+              className="color-input"
+              aria-label="Custom color picker"
+            />
           </div>
           <div className="modal-actions">
             <button type="submit">Add</button>
@@ -110,23 +110,48 @@ const AddNoteModal: React.FC<AddNoteModalProps> = ({
           padding: 0.5rem;
         }
         .color-picker {
-          margin-bottom: 1rem;
-        }
-        .color-options {
           display: flex;
           gap: 0.5rem;
           margin-top: 0.5rem;
+          align-items: center;
+          justify-content: center;
         }
         .color-btn {
-          width: 28px;
-          height: 28px;
+          width: 32px;
+          height: 32px;
           border-radius: 50%;
           border: 2px solid #ccc;
           cursor: pointer;
           outline: none;
+          transition: border 0.2s, box-shadow 0.2s;
+          box-shadow: 0 1px 4px rgba(0,0,0,0.08);
         }
         .color-btn.selected {
-          border: 2px solid #333;
+          border: 3px solid #333;
+          box-shadow: 0 0 0 2px #3333;
+        }
+        .color-btn:focus {
+          border: 2px solid #0078d4;
+        }
+        .color-input {
+          width: 36px;
+          height: 36px;
+          border: none;
+          padding: 0;
+          margin: 0;
+          background: none;
+          cursor: pointer;
+          border-radius: 50%;
+          box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+          align-self:center;
+        }
+        .color-input::-webkit-color-swatch-wrapper {
+          padding: 0;
+          border-radius: 50%;
+        }
+        .color-input::-webkit-color-swatch {
+          border-radius: 50%;
+          border: 2px solid #ccc;
         }
       `}</style>
     </div>

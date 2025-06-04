@@ -39,15 +39,24 @@ function App() {
 
   return (
     <>
+      <style>
+        {`
+          .add-note-btn {
+            margin-bottom: 1rem;
+          }
+          .notes-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+          }
+        `}
+      </style>
       <main>
         <h1>My Notes</h1>
-        <button
-          onClick={() => setShowAddModal(true)}
-          style={{ marginBottom: "1rem" }}
-        >
+        <button onClick={() => setShowAddModal(true)} className="add-note-btn">
           Add Note
         </button>
-        <ul style={{ display: "flex", flexWrap: "wrap", gap: "1rem" }}>
+        <ul className="notes-list">
           {notes.map((note, i) => (
             <Notes key={i} note={note} onClick={() => openNote(note)} />
           ))}
