@@ -1,3 +1,5 @@
+import "../styles/addNoteModal.css";
+import "../styles/categoryFilter.css";
 import React, { useState, useEffect } from "react";
 import useCategoryStore from "../store/category.store.ts";
 import type { Category } from "../types/category";
@@ -107,11 +109,7 @@ const AddNoteModal: React.FC<AddNoteModalProps> = ({ isOpen }) => {
               name="category"
               value={category?.id_category || ""}
               onChange={handleCategoryChange}
-              style={{
-                width: "100%",
-                marginBottom: "0.5rem",
-                padding: "0.5rem",
-              }}
+              className="category-select"
             >
               <option key={0} value={""}>
                 Default Category
@@ -128,7 +126,7 @@ const AddNoteModal: React.FC<AddNoteModalProps> = ({ isOpen }) => {
             </select>
           </section>
           <section className="color-picker">
-            <label>Choose a color for the note:</label>
+            <label htmlFor="color">Choose a color for the note:</label>
             <input
               type="color"
               name="color"
@@ -139,85 +137,22 @@ const AddNoteModal: React.FC<AddNoteModalProps> = ({ isOpen }) => {
             />
           </section>
           <section className="modal-actions">
-            <button type="submit">{editMode ? "Edit" : "Add"}</button>
-            <button type="button" onClick={closeAddModal}>
+            <button
+              type="submit"
+              className="modal-buttons modal-buttons-primary"
+            >
+              {editMode ? "Edit" : "Add"}
+            </button>
+            <button
+              type="button"
+              className="modal-buttons "
+              onClick={closeAddModal}
+            >
               Cancel
             </button>
           </section>
         </form>
       </div>
-      <style>{`
-        .modal-backdrop {
-          position: fixed;
-          top: 0; left: 0; right: 0; bottom: 0;
-          background: rgba(0,0,0,0.3);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          z-index: 1000;
-        }
-        .modal {
-          background: #fff;
-          padding: 2rem;
-          border-radius: 8px;
-          min-width: 300px;
-          box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        }
-        .modal-actions {
-          margin-top: 1rem;
-          display: flex;
-          gap: 1rem;
-        }
-        input, textarea {
-          width: 100%;
-          margin-bottom: 1rem;
-          padding: 0.5rem;
-        }
-        .color-picker {
-          display: flex;
-          gap: 0.5rem;
-          margin-top: 0.5rem;
-          align-items: center;
-          justify-content: center;
-        }
-        .color-btn {
-          width: 32px;
-          height: 32px;
-          border-radius: 50%;
-          border: 2px solid #ccc;
-          cursor: pointer;
-          outline: none;
-          transition: border 0.2s, box-shadow 0.2s;
-          box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-        }
-        .color-btn.selected {
-          border: 3px solid #333;
-          box-shadow: 0 0 0 2px #3333;
-        }
-        .color-btn:focus {
-          border: 2px solid #0078d4;
-        }
-        .color-input {
-          width: 36px;
-          height: 36px;
-          border: none;
-          padding: 0;
-          margin: 0;
-          background: none;
-          cursor: pointer;
-          border-radius: 50%;
-          box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-          align-self:center;
-        }
-        .color-input::-webkit-color-swatch-wrapper {
-          padding: 0;
-          border-radius: 50%;
-        }
-        .color-input::-webkit-color-swatch {
-          border-radius: 50%;
-          border: 2px solid #ccc;
-        }
-      `}</style>
     </div>
   );
 };

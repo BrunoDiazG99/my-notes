@@ -40,3 +40,19 @@
 .read-the-docs {
   color: #888;
 }
+
+.add-note-btn {
+  margin-bottom: 1rem;
+}
+.notes-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.note-actions-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 1rem;
+}
