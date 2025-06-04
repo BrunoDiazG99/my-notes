@@ -1,5 +1,5 @@
 import "../styles/noteModal.css";
-import useNotesStore from "../store/notes.store.ts";
+import useNotesStore from "../store/notes.store";
 import type { Note } from "../types/notes";
 
 type NoteModalProps = {

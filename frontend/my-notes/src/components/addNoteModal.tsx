@@ -1,9 +1,9 @@
 import "../styles/addNoteModal.css";
 import "../styles/categoryFilter.css";
 import React, { useState, useEffect } from "react";
-import useCategoryStore from "../store/category.store.ts";
+import useCategoryStore from "../store/category.store";
 import type { Category } from "../types/category";
-import useNotesStore from "../store/notes.store.ts";
+import useNotesStore from "../store/notes.store";
 
 interface AddNoteModalProps {
   isOpen: boolean;

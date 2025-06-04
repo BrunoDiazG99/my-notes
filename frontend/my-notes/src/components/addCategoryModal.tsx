@@ -1,6 +1,6 @@
 import "../styles/addCategoryModal.css";
 import React, { useState } from "react";
-import useCategoryStore from "../store/category.store.ts";
+import useCategoryStore from "../store/category.store";
 
 interface AddCategoryModalProps {
   open: boolean;

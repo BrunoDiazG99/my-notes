@@ -2,9 +2,9 @@ import "./App.css";
 import Notes from "./components/notes.tsx";
 import NoteModal from "./components/noteModal.tsx";
 import AddNoteModal from "./components/addNoteModal.tsx";
-import useNotesStore from "./store/notes.store.ts";
+import useNotesStore from "./store/notes.store";
 import { useEffect, useState } from "react";
-import useCategoryStore from "./store/category.store.ts";
+import useCategoryStore from "./store/category.store";
 import AddCategoryModal from "./components/addCategoryModal.tsx";
 import CategoryFilter from "./components/categoryFilter.tsx";
 

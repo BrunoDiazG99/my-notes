@@ -1,5 +1,5 @@
 import "../styles/categoryFilter.css";
-import useCategoryStore from "../store/category.store.ts";
+import useCategoryStore from "../store/category.store";
 import type { Category } from "../types/category";
 
 const CategoryFilter: React.FC = () => {

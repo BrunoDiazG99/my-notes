@@ -1,9 +1,6 @@
 import { create } from "zustand";
 import type { Category } from "../types/category";
-import {
-  createCategory,
-  getCategories,
-} from "../services/category.services.ts";
+import { createCategory, getCategories } from "../services/category.services";
 
 type CategoryStore = {
   categories: Category[];

@@ -7,7 +7,7 @@ import {
   getNotes,
   restoreNote,
   updateNote,
-} from "../services/notes.service.ts";
+} from "../services/notes.service";
 
 type NotesStore = {
   notes: Note[];

@@ -2,7 +2,7 @@ import "../styles/notes.css";
 import { useRef } from "react";
 import type { Note } from "../types/notes";
 import { Pencil, Archive, Trash2, ArchiveRestore } from "lucide-react";
-import useNotesStore from "../store/notes.store.ts";
+import useNotesStore from "../store/notes.store";
 
 type NotesProps = {
   note: Note;
