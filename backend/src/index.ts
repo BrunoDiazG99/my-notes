@@ -7,13 +7,12 @@ import api from "./routes";
 import orm from "./config/sequelize";
 
 const FRONTEND_URL =
-  process.env.FRONTEND_URL || "https://brunodiazg99.github.io/my-notes/";
+  process.env.FRONTEND_URL || "https://brunodiazg99.github.io";
 
 const corsOptions = {
   origin: FRONTEND_URL,
   methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: true,
 };
 
 const app = express();
