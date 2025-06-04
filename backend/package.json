@@ -6,11 +6,10 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
-    "dev": "nodemon --watch './src/**/*.ts' --loader ts-node/esm index.js"
+    "dev": "nodemon --exec ts-node src/index.ts"
   },
   "author": "Bruno Diaz",
   "license": "ISC",
-  "type": "module",
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
@@ -20,6 +19,7 @@
     "sequelize": "^6.37.7"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.18",
     "@types/express": "^5.0.2",
     "@types/node": "^22.15.29",
     "nodemon": "^3.1.10",

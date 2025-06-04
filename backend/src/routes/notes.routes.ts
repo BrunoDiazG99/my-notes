@@ -1,19 +1,17 @@
 import { Router } from "express";
-import { NotesController } from "../controllers/notes.controller.ts";
+import { NotesController } from "../controllers/notes.controller";
 
 const router = Router();
 
-const notesController = new NotesController();
-
-router.get("/", notesController.getNotes.bind(notesController));
-router.post("/", notesController.createNote.bind(notesController));
-router.put("/:id", notesController.updateNote.bind(notesController));
-router.delete("/:id", notesController.deleteNote.bind(notesController));
+router.get("/", NotesController.getNotes);
+router.post("/", NotesController.createNote);
+router.put("/:id", NotesController.updateNote);
+router.delete("/:id", NotesController.deleteNote);
 
 // Decided it was not neccesary
-// router.get("/archive", notesController.getArchived.bind(notesController));
+// router.get("/archive", NotesController.getArchived);
 
-router.put("/archive/:id", notesController.archive.bind(notesController));
-router.put("/restore/:id", notesController.restore.bind(notesController));
+router.put("/archive/:id", NotesController.archive);
+router.put("/restore/:id", NotesController.restore);
 
 export default router;

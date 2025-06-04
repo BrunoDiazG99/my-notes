@@ -1,6 +1,6 @@
 import { Router } from "express";
-import categoryRouter from "./routes/categories.routes.ts";
-import notesRouter from "./routes/notes.routes.ts";
+import categoryRouter from "./routes/categories.routes";
+import notesRouter from "./routes/notes.routes";
 
 const mainRouter = Router();
 

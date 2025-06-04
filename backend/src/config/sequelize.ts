@@ -1,8 +1,8 @@
 import { Sequelize } from "sequelize";
 const orm = new Sequelize(
-  process.env.DB_NAME,
-  process.env.DB_USER,
-  process.env.DB_PASSWORD,
+  process.env.DB_NAME || "default_db",
+  process.env.DB_USER || "default_user",
+  process.env.DB_PASSWORD || "default_password",
   {
     host: process.env.DB_HOST,
     port: 5432,

@@ -3,8 +3,8 @@ import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 
-import api from "./src/routes.js";
-import orm from "./src/config/sequelize.js";
+import api from "./routes";
+import orm from "./config/sequelize";
 
 const FRONTEND_URL = "http://localhost:5173";
 
@@ -22,7 +22,7 @@ app.use(cors(corsOptions));
 
 app.use("/api/v1", api);
 
-await orm.sync({ force: false });
+orm.sync({ force: false });
 
 const PORT = "4001";
 

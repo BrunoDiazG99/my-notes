@@ -1,17 +1,12 @@
 import { Router } from "express";
-import { CategoriesController } from "../controllers/categories.controller.ts";
+import { CategoriesController } from "../controllers/categories.controller";
 
 const router = Router();
 
-const categoriesController = new CategoriesController();
-
-router.get("/", categoriesController.getAll.bind(categoriesController));
-router.get("/:id", categoriesController.getById.bind(categoriesController));
-router.post("/", categoriesController.create.bind(categoriesController));
-router.put("/:id", categoriesController.updateById.bind(categoriesController));
-router.delete(
-  "/:id",
-  categoriesController.deleteById.bind(categoriesController)
-);
+router.get("/", CategoriesController.getAll);
+router.get("/:id", CategoriesController.getById);
+router.post("/", CategoriesController.create);
+router.put("/:id", CategoriesController.updateById);
+router.delete("/:id", CategoriesController.deleteById);
 
 export default router;

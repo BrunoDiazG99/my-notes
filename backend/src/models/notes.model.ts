@@ -1,6 +1,6 @@
 import { DataTypes, where } from "sequelize";
-import orm from "../config/sequelize.js";
-import { Categories } from "./categories.model.ts";
+import orm from "../config/sequelize";
+import { Categories } from "./categories.model";
 
 export type Note = {
   id_note: number;
@@ -62,134 +62,142 @@ export const connect = async function () {
   console.log("ORM Connected");
 };
 
-export class NotesModel {
-  getAll = async (category?: string) => {
-    try {
-      const results = await Notes.findAll({
-        include: [
-          {
-            model: Categories,
-            as: "category",
-            attributes: ["id_category", "name"],
-          },
-        ],
-        where: {
-          ...(category ? { id_category: category } : {}),
+const getAll = async (category?: string) => {
+  try {
+    const results = await Notes.findAll({
+      include: [
+        {
+          model: Categories,
+          as: "category",
+          attributes: ["id_category", "name"],
         },
-      });
-      if (!results) {
-        return null;
-      }
-      return results.map((res) => res.toJSON());
-    } catch (error) {
-      console.log("Error in model: ", error);
-      throw error;
+      ],
+      where: {
+        ...(category ? { id_category: category } : {}),
+      },
+    });
+    if (!results) {
+      return null;
     }
-  };
+    return results.map((res) => res.toJSON());
+  } catch (error) {
+    console.log("Error in model: ", error);
+    throw error;
+  }
+};
 
-  getArchived = async () => {
-    try {
-      const results = await Notes.findAll({
-        where: {
-          isActive: false,
-        },
-      });
-      if (!results) {
-        return null;
-      }
-      return results.map((res) => res.toJSON());
-    } catch (error) {
-      console.log("Error in model: ", error);
-      throw error;
+const getArchived = async () => {
+  try {
+    const results = await Notes.findAll({
+      where: {
+        isActive: false,
+      },
+    });
+    if (!results) {
+      return null;
     }
-  };
+    return results.map((res) => res.toJSON());
+  } catch (error) {
+    console.log("Error in model: ", error);
+    throw error;
+  }
+};
 
-  create = async (dataNote: Note) => {
-    try {
-      const note = await Notes.create({
+const create = async (dataNote: Note) => {
+  try {
+    const note = await Notes.create({
+      title: dataNote.title,
+      content: dataNote.content,
+      color: dataNote.color,
+      id_category: dataNote.id_category,
+    });
+    return note.toJSON().id_note;
+  } catch (error) {
+    console.log("Error in model: ", error);
+    throw error;
+  }
+};
+
+const updateById = async (id_note: number, dataNote: Note) => {
+  try {
+    const [updatedRows] = await Notes.update(
+      {
         title: dataNote.title,
         content: dataNote.content,
         color: dataNote.color,
         id_category: dataNote.id_category,
-      });
-      return note.toJSON().id_note;
-    } catch (error) {
-      console.log("Error in model: ", error);
-      throw error;
-    }
-  };
-
-  updateById = async (id_note: number, dataNote: Note) => {
-    try {
-      const [updatedRows] = await Notes.update(
-        {
-          title: dataNote.title,
-          content: dataNote.content,
-          color: dataNote.color,
-          id_category: dataNote.id_category,
-        },
-        {
-          where: {
-            id_note: id_note,
-          },
-        }
-      );
-      return updatedRows;
-    } catch (error) {
-      console.log("Error in model: ", error);
-      throw error;
-    }
-  };
-
-  deleteById = async (id_note: number) => {
-    try {
-      const deletedRows = await Notes.destroy({
+      },
+      {
         where: {
           id_note: id_note,
         },
-      });
-      return deletedRows;
-    } catch (error) {
-      console.log("Error in model: ", error);
-      throw error;
-    }
-  };
+      }
+    );
+    return updatedRows;
+  } catch (error) {
+    console.log("Error in model: ", error);
+    throw error;
+  }
+};
 
-  archive = async (id_note: number) => {
-    try {
-      const [updatedRows] = await Notes.update(
-        {
-          isActive: false,
-        },
-        {
-          where: {
-            id_note: id_note,
-          },
-        }
-      );
-      return updatedRows;
-    } catch (error) {
-      console.log("Error in model: ", error);
-      throw error;
-    }
-  };
+const deleteById = async (id_note: number) => {
+  try {
+    const deletedRows = await Notes.destroy({
+      where: {
+        id_note: id_note,
+      },
+    });
+    return deletedRows;
+  } catch (error) {
+    console.log("Error in model: ", error);
+    throw error;
+  }
+};
 
-  restore = async (id_note: number) => {
-    try {
-      const [updatedRows] = await Notes.update(
-        {
-          isActive: true,
+const archive = async (id_note: number) => {
+  try {
+    const [updatedRows] = await Notes.update(
+      {
+        isActive: false,
+      },
+      {
+        where: {
+          id_note: id_note,
         },
-        {
-          where: {
-            id_note: id_note,
-          },
-        }
-      );
-      return updatedRows;
-    } catch (error) {
-      console.log("Error in model: ", error);
-      throw error;
-    }
-  };
-}
+      }
+    );
+    return updatedRows;
+  } catch (error) {
+    console.log("Error in model: ", error);
+    throw error;
+  }
+};
+
+const restore = async (id_note: number) => {
+  try {
+    const [updatedRows] = await Notes.update(
+      {
+        isActive: true,
+      },
+      {
+        where: {
+          id_note: id_note,
+        },
+      }
+    );
+    return updatedRows;
+  } catch (error) {
+    console.log("Error in model: ", error);
+    throw error;
+  }
+};
+
+export const NotesModel = {
+  getAll,
+  getArchived,
+  create,
+  updateById,
+  deleteById,
+  archive,
+  restore,
+};

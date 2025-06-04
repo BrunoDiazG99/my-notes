@@ -1,18 +1,22 @@
 {
   "compilerOptions": {
-    "module": "esnext",
-    "esModuleInterop": true,
-    "target": "es6",
+    "target": "es2022",
+    "module": "commonjs",
     "moduleResolution": "node",
+    "esModuleInterop": true,
     "sourceMap": true,
     "outDir": "dist",
-    "allowImportingTsExtensions": true,
-    "noEmit": true
+    "rootDir": "src",
+    "allowImportingTsExtensions": false, // disable, not needed in CommonJS
+    "declaration": true,
+    "emitDeclarationOnly": false, // you want .js files emitted
+    "lib": ["es2020"],
+    "noEmit": false,
+    "strict": true
   },
-  "ts-node": {
-    "esm": true
-  },
-  "lib": ["es2015"],
   "include": ["src/**/*"],
-  "exclude": ["**/*.spec.ts"]
+  "exclude": ["node_modules", "dist"],
+  "ts-node": {
+    "esm": false
+  }
 }
