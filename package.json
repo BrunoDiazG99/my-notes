@@ -15,6 +15,9 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
+    "clean": "rm -rf node_modules && rm -rf backend/node_modules frontend/my-notes/node_modules",
+    "install-front": "npm install --prefix frontend/my-notes",
+    "install-back": "npm install --prefix backend",
     "dev": "concurrently \"npm run dev --prefix backend\" \"npm run dev --prefix frontend/my-notes\""
   },
   "devDependencies": {
