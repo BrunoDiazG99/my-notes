@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
-    "dev": "nodemon --exec ts-node src/index.ts"
+    "dev": "set NODE_ENV=development&& nodemon --exec ts-node src/index.ts"
   },
   "author": "Bruno Diaz",
   "license": "ISC",

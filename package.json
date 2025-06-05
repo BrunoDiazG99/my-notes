@@ -1,0 +1,23 @@
+{
+  "name": "my-notes",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/BrunoDiazG99/my-notes#readme",
+  "bugs": {
+    "url": "https://github.com/BrunoDiazG99/my-notes/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BrunoDiazG99/my-notes.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run dev --prefix backend\" \"npm run dev --prefix frontend/my-notes\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

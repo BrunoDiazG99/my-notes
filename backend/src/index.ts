@@ -7,7 +7,9 @@ import api from "./routes";
 import orm from "./config/sequelize";
 
 const FRONTEND_URL =
-  process.env.FRONTEND_URL || "https://brunodiazg99.github.io";
+  process.env.NODE_ENV === "development"
+    ? "http://localhost:5173"
+    : process.env.FRONTEND_URL || "https://brunodiazg99.github.io";
 
 const corsOptions = {
   origin: FRONTEND_URL,
